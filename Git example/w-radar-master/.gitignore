@@ -1,0 +1,12 @@
+# ignore file backups
+*~
+
+# ignore matlab figures
+*.fig
+*.png
+
+# ignore individual radars config, pre-and postprocessing files
+*joyrad*.m
+*mirac*.m
+*inoe*.m
+*smhi*.m

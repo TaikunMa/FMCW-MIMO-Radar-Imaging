@@ -1,0 +1,37 @@
+%% Get Range, Velocity, Spacial location of the given data cube
+function [outputArg1,outputArg2] = Data_Cube_Imaging(DataCube,nfft_r,nfft_d,fc,fs)
+%Input definition
+%   DataCube : Data matrix with dimension of range-channel-chirp.
+%   nfft_r   : FFT points on range dimension 
+%   nfft_d   : FFT points on doppler dimension
+%   fc       : Carrier frequency
+%   fs       : Sample rate
+%   Detailed explanation goes here
+nfft_r_temp = 2^nextpow2(size(DataCube,1));
+nfft_d_temp = 2^nextpow2(size(DataCube,3));
+fc;
+fs;
+
+if(nfft_r != 0)
+    nfft_r_temp = nfft_r;
+end
+if(nfft_d == 0)
+    nfft_d_temp = 2^nextpow2(size(DataCube,3));
+else
+    nfft_d_temp = nfft_d;
+end
+
+rngdop = phased.RangeDopplerResponse('PropagationSpeed',c,...
+    'DopplerOutput','Speed','OperatingFrequency',fc,'SampleRate',fs,...
+    'RangeMethod','FFT','PRFSource','Property',...
+    'RangeWindow','Hann','PRF',1/(Nt*waveform.SweepTime),...
+    'SweepSlope',waveform.SweepBandwidth/waveform.SweepTime,...
+    'RangeFFTLengthSource','Property','RangeFFTLength',nfft_r_temp,...
+    'DopplerFFTLengthSource','Property','DopplerFFTLength',nfft_d_temp,...
+    'DopplerWindow','Hann');
+
+[resp,r,sp] = rngdop(xrv);
+outputArg1 = DataCube;
+outputArg2 = inputArg2;
+end
+

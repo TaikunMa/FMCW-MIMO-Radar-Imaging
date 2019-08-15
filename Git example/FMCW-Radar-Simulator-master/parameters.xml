@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<parameters>
+  <bandwith>50e6</bandwith>
+  <sample_frequency>100e6</sample_frequency>
+  <carrier_frequency>10e9</carrier_frequency>
+  <transmitted_power>800</transmitted_power>
+
+  <observation_time>5e-3</observation_time>
+  <modulation_time>8e-6</modulation_time>
+
+  <number_of_targets>4</number_of_targets>
+
+  <noise_temperature>300</noise_temperature>
+  <noise_figure>2.5</noise_figure>
+
+  <cfar>13</cfar>
+
+  <targets>
+    <target1>
+      <x>100</x>
+      <y>0</y>
+      <z>0</z>
+      <vx>15</vx>
+      <vy>0</vy>
+      <vz>0</vz>
+      <rcs>10</rcs>
+    </target1>
+    <target2>
+      <x>100</x>
+      <y>0</y>
+      <z>0</z>
+      <vx>25</vx>
+      <vy>0</vy>
+      <vz>0</vz>
+      <rcs>10</rcs>
+    </target2>
+    <target3>
+      <x>300</x>
+      <y>000</y>
+      <z>0</z>
+      <vx>15</vx>
+      <vy>0</vy>
+      <vz>0</vz>
+      <rcs>10</rcs>
+    </target3>
+    <target4>
+      <x>50</x>
+      <y>0</y>
+      <z>0</z>
+      <vx>-30</vx>
+      <vy>0</vy>
+      <vz>0</vz>
+      <rcs>10</rcs>
+    </target4>
+  </targets>
+
+  <antennas>
+    <antenna1>
+      <x>0</x>
+      <y>0</y>
+      <z>0</z>
+      <gain>40</gain>
+    </antenna1>
+    <antenna2>
+      <x>0</x>
+      <y>0</y>
+      <z>0</z>
+      <gain>40</gain>
+    </antenna2>
+    <antenna3>
+      <x>0</x>
+      <y>0</y>
+      <z>0</z>
+      <gain>40</gain>
+    </antenna3>
+  </antennas>
+
+</parameters>

@@ -158,7 +158,7 @@ radarmotion = phased.Platform('InitialPosition',[0;0;0],'Velocity',[radar_speed;
 car_dist = [30 40];              % Distance between sensor and cars (meters)
 car_speed = [0 0];  % km/h -> m/s
 car_az = [10 20];
-car_el = [0 0];
+car_el = [0 10];
 car_rcs = [20 20];
 car_pos = [car_dist.*cosd(car_el).*cosd(car_az);car_dist.*cosd(car_el).*sind(car_az);car_dist.*sind(car_el)];
 
@@ -230,6 +230,7 @@ xr2 = xr(:,:,2:2:end);
 % cube from the virtual array can be formed as:
 
 xrv = cat(2,xr1,xr2);
+save('DataCube.mat','xrv');
 
 %%
 % Next, perform range-Doppler processing on the virtual data cube. Because

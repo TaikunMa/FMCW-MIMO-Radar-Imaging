@@ -38,8 +38,7 @@ rxarray = phased.ULA(Nr,dr);
 
 tx_ant_pos = [0 0  0    0    0    0    0    0    ;...
               0 dt 2*dt 3*dt 4*dt 5*dt 6*dt 7*dt ;...
-              0 dt 2*dt 3*dt 4*dt 5*dt 6*dt 7*dt ];
-ax_ant_pos = 
+              0 dt 2*dt ];
 tx_array = phased.ConformalArray('ElementPosition',antenna_pos);
 
 viewArray(txarray);

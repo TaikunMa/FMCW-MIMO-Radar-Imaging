@@ -24,8 +24,8 @@
 fc = 77e9;
 c = 3e8;
 lambda = c/fc;
-Nt = 8;
-Nr = 12;
+Nt = 2;
+Nr = 6;
 %%
 % If both arrays have half-wavelength spacing, which are sometimes referred
 % to as full arrays, then the two-way pattern is close to the receive array
@@ -33,22 +33,32 @@ Nr = 12;
 dt = lambda/2;
 dr = lambda/2;
 
-txarray = phased.ULA(Nt,dt);
-rxarray = phased.ULA(Nr,dr);
+% txarray = phased.ULA(Nt,dt);
+% rxarray = phased.ULA(Nr,dr);
 
-tx_ant_pos = [0 0  0    0    0    0    0    0    ;...
-              0 dt 2*dt 3*dt 4*dt 5*dt 6*dt 7*dt ;...
-              0 dt 2*dt 3*dt 4*dt 5*dt 6*dt 7*dt ];
-ax_ant_pos = 
-tx_array = phased.ConformalArray('ElementPosition',antenna_pos);
+% tx_ant_pos = [0 0  0    0    0    0    0    0    ;...
+%               0 dt 2*dt 3*dt 4*dt 5*dt 6*dt 7*dt ;...
+%               0 dt 2*dt 3*dt 4*dt 5*dt 6*dt 7*dt ];
+tx_ant_pos = [0 0    ;...
+              0 3*dt ;...
+              0 dt   ];
+rx_ant_pos = [0 0  0    0    0    0   ;...
+              0 dt 2*dt 3*dt 4*dt 5*dt;...
+              0 0  0    0    0    0  ];
+v_ant_pos = [0 0  0    0    0    0    0    0    0    0    0    0   ;...
+             0 dt 2*dt 3*dt 4*dt 5*dt 3*dt 4*dt 5*dt 6*dt 7*dt 8*dt;...
+             0 0  0    0    0    0    dt   dt   dt   dt   dt   dt ];
+tx_array = phased.ConformalArray('ElementPosition',tx_ant_pos);
+rx_array = phased.ConformalArray('ElementPosition',rx_ant_pos);
+v_array = phased.ConformalArray('ElementPosition',v_ant_pos);
 
-viewArray(txarray);
+% viewArray(v_array);
 
 ang = -90:90;
 
-pattx = pattern(txarray,fc,ang,0,'Type','powerdb');
-patrx = pattern(rxarray,fc,ang,0,'Type','powerdb');
-pat2way = pattx+patrx;
+% pattx = pattern(txarray,fc,ang,0,'Type','powerdb');
+% patrx = pattern(rxarray,fc,ang,0,'Type','powerdb');
+% pat2way = pattx+patrx;
 
 % helperPlotMultipledBPattern(ang,[pat2way pattx patrx],[-30 0],...
 %     {'Two-way Pattern','Tx Pattern','Rx Pattern'},...
@@ -62,10 +72,10 @@ pat2way = pattx+patrx;
 % has a narrower beamwidth. Notice that even though the thin transmit array
 % has grating lobes, those grating lobes are not present in the two-way
 % pattern.
-dt = Nr*lambda/2;
-txarray = phased.ULA(Nt,dt);
-pattx = pattern(txarray,fc,ang,0,'Type','powerdb');
-pat2way = pattx+patrx;
+% dt = Nr*lambda/2;
+% txarray = phased.ULA(Nt,dt);
+% pattx = pattern(txarray,fc,ang,0,'Type','powerdb');
+% pat2way = pattx+patrx;
 % helperPlotMultipledBPattern(ang,[pat2way pattx patrx],[-30 0],...
 %     {'Two-way Pattern','Tx Pattern','Rx Pattern'},...
 %     'Patterns of thin/full arrays - 2Tx, 4Rx',...
@@ -80,8 +90,8 @@ pat2way = pattx+patrx;
 %
 % <<../TwoWayPatternVirtualArray.png>>
 %
-varray = phased.ULA(Nt*Nr,dr);
-patv = pattern(varray,fc,ang,0,'Type','powerdb');
+% varray = phased.ULA(Nt*Nr,dr);
+% patv = pattern(varray,fc,ang,0,'Type','powerdb');
 % helperPlotMultipledBPattern(ang,[pat2way patv],[-30 0],...
 %     {'Two-way Pattern','Virtual Array Pattern'},...
 %     'Patterns of thin/full arrays and virtual array',...
@@ -126,10 +136,10 @@ fs = waveform.SampleRate;
 transmitter = phased.Transmitter('PeakPower',0.001,'Gain',36);
 receiver = phased.ReceiverPreamp('Gain',40,'NoiseFigure',4.5,'SampleRate',fs);
 
-txradiator = phased.Radiator('Sensor',txarray,'OperatingFrequency',fc,...
+txradiator = phased.Radiator('Sensor',tx_array,'OperatingFrequency',fc,...
     'PropagationSpeed',c,'WeightsInputPort',true);
 
-rxcollector = phased.Collector('Sensor',rxarray,'OperatingFrequency',fc,...
+rxcollector = phased.Collector('Sensor',rx_array,'OperatingFrequency',fc,...
     'PropagationSpeed',c);
 %%
 % Define the position and motion of the ego vehicle and the two cars in the
@@ -137,7 +147,7 @@ rxcollector = phased.Collector('Sensor',rxarray,'OperatingFrequency',fc,...
 
 % radar_speed = 100*1000/3600;     % Ego vehicle speed 100 km/h
 radar_speed = 0;
-radarmotion = phased.Platform('InitialPosition',[0;0;0.5],'Velocity',[radar_speed;0;0]);
+radarmotion = phased.Platform('InitialPosition',[0;0;0],'Velocity',[radar_speed;0;0]);
 
 % car_dist = [40 50];              % Distance between sensor and cars (meters)
 % car_speed = [-80 96]*1000/3600;  % km/h -> m/s
@@ -145,14 +155,15 @@ radarmotion = phased.Platform('InitialPosition',[0;0;0.5],'Velocity',[radar_spee
 % car_rcs = [20 40];
 % car_pos = [car_dist.*cosd(car_az);car_dist.*sind(car_az);0.5 0.5];
 
-car_dist = [30];              % Distance between sensor and cars (meters)
-car_speed = [3];  % km/h -> m/s
-car_az = [10];
-car_rcs = [20];
-car_pos = [car_dist.*cosd(car_az);car_dist.*sind(car_az);0.5];
+car_dist = [30 40];              % Distance between sensor and cars (meters)
+car_speed = [0 0];  % km/h -> m/s
+car_az = [10 20];
+car_el = [0 0];
+car_rcs = [20 20];
+car_pos = [car_dist.*cosd(car_el).*cosd(car_az);car_dist.*cosd(car_el).*sind(car_az);car_dist.*sind(car_el)];
 
 cars = phased.RadarTarget('MeanRCS',car_rcs,'PropagationSpeed',c,'OperatingFrequency',fc);
-carmotion = phased.Platform('InitialPosition',car_pos,'Velocity',[car_speed;0;0]);
+carmotion = phased.Platform('InitialPosition',car_pos,'Velocity',[car_speed;0 0;0 0]);
 
 %%
 % The propagation model is assumed to be free space.
@@ -257,7 +268,7 @@ plotResponse(rngdop,squeeze(xrv(:,1,:)));
 % figure, the threshold is set at 10 dB below the maximum peak.
 
 respmap = squeeze(mag2db(abs(resp(:,1,:))));
-ridx = helperRDDetection(respmap,-10);
+ridx = helperRDDetection(respmap,-20);
    
 %%
 % Based on the detected range of the targets, the corresponding range cuts
@@ -269,13 +280,13 @@ ridx = helperRDDetection(respmap,-10);
 % measurements to estimate the directions of the targets.
 
 xv = squeeze(sum(resp(ridx,:,:),1))';
-xv(:,7:12) = xv(:,7:12).*exp(1i*2*pi*2*fc*3*1e-4/3e8);
+% xv(:,7:12) = xv(:,7:12).*exp(1i*2*pi*2*fc*2.8*1e-4/3e8);
 
-doa = phased.BeamscanEstimator('SensorArray',varray,'PropagationSpeed',c,...
-    'OperatingFrequency',fc,'DOAOutputPort',true,'NumSignals',1,'ScanAngles',ang);
-[Pdoav,target_az_est] = doa(xv);
-
-fprintf('target_az_est = [%s]\n',num2str(target_az_est));
+doa = phased.BeamscanEstimator2D('SensorArray',v_array,'OperatingFrequency',fc, ...
+    'DOAOutputPort',true,'NumSignals',2,'AzimuthScanAngles',-50:50,'ElevationScanAngles',-30:30);
+[Pdoav,target_az_el_est] = doa(xv);
+disp(target_az_el_est)
+% fprintf('target_az_est = [%s]\n',num2str(target_az_el_est));
 
 %%
 % The two targets are successfully separated. The actual angles for the two
@@ -284,13 +295,13 @@ fprintf('target_az_est = [%s]\n',num2str(target_az_est));
 %%
 % The next figure compares the spatial spectrums from the virtual and the
 % physical receive array.
-doarx = phased.BeamscanEstimator('SensorArray',rxarray,'PropagationSpeed',c,...
-    'OperatingFrequency',fc,'DOAOutputPort',true,'ScanAngles',ang);
-Pdoarx = doarx(xr);
-
-helperPlotMultipledBPattern(ang,mag2db(abs([Pdoav Pdoarx])),[-30 0],...
-    {'Virtual Array','Physical Array'},...
-    'Spatial spectrum for virtual array and physical array',{'-','--'});
+% doarx = phased.BeamscanEstimator2D('SensorArray',rxarray,'PropagationSpeed',c,...
+%     'OperatingFrequency',fc,'DOAOutputPort',true,'ScanAngles',ang);
+% Pdoarx = doarx(xr);
+% 
+% helperPlotMultipledBPattern(ang,mag2db(abs([Pdoav Pdoarx])),[-30 0],...
+%     {'Virtual Array','Physical Array'},...
+%     'Spatial spectrum for virtual array and physical array',{'-','--'});
 
 %%
 % In this example, the detection is performed on the range-Doppler map

@@ -157,8 +157,8 @@ radarmotion = phased.Platform('InitialPosition',[0;0;0],'Velocity',[radar_speed;
 
 car_dist = [30 40];              % Distance between sensor and cars (meters)
 car_speed = [0 0];  % km/h -> m/s
-car_az = [10 20];
-car_el = [0 10];
+car_az = [10 -20];
+car_el = [0 15];
 car_rcs = [20 20];
 car_pos = [car_dist.*cosd(car_el).*cosd(car_az);car_dist.*cosd(car_el).*sind(car_az);car_dist.*sind(car_el)];
 
@@ -269,7 +269,7 @@ plotResponse(rngdop,squeeze(xrv(:,1,:)));
 % figure, the threshold is set at 10 dB below the maximum peak.
 
 respmap = squeeze(mag2db(abs(resp(:,1,:))));
-ridx = helperRDDetection(respmap,-20);
+ridx = helperRDDetection(respmap,-10);
    
 %%
 % Based on the detected range of the targets, the corresponding range cuts
@@ -284,7 +284,7 @@ xv = squeeze(sum(resp(ridx,:,:),1))';
 % xv(:,7:12) = xv(:,7:12).*exp(1i*2*pi*2*fc*2.8*1e-4/3e8);
 
 doa = phased.BeamscanEstimator2D('SensorArray',v_array,'OperatingFrequency',fc, ...
-    'DOAOutputPort',true,'NumSignals',2,'AzimuthScanAngles',-50:50,'ElevationScanAngles',-30:30);
+    'DOAOutputPort',true,'NumSignals',1,'AzimuthScanAngles',-50:50,'ElevationScanAngles',-30:30);
 [Pdoav,target_az_el_est] = doa(xv);
 disp(target_az_el_est)
 % fprintf('target_az_est = [%s]\n',num2str(target_az_el_est));

@@ -66,9 +66,9 @@ for i = 1:TargetNum
 end
 disp(AngleIndex);
 TargetInformation = zeros(4,TargetNum);
-TargetInformation(3,:) = RangeGrid(RangeIndex);
-TargetInformation(1:2,:) = AngleIndex;
-TargetInformation(4,:) = DopplerGrid(DopplerIndex);
+TargetInformation(3,:) = -RangeGrid(RangeIndex);
+TargetInformation(1:2,:) = -AngleIndex;
+TargetInformation(4,:) = -DopplerGrid(DopplerIndex);
 
 end
 

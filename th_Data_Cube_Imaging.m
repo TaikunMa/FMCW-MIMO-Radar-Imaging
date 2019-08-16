@@ -24,4 +24,10 @@ RD_Th = -20;
                                      RD_Th);
 TargetLocation_cart = zeros(3,TargetNum);
 [TargetLocation_cart(1,:) TargetLocation_cart(2,:) TargetLocation_cart(3,:)] = sph2cart(TargetInfomation(1,:),TargetInfomation(2,:),TargetInfomation(3,:));
+figure(1)
 scatter3(TargetLocation_cart(1,:)',TargetLocation_cart(2,:)',TargetLocation_cart(3,:)');
+xlabel('X');
+ylabel('Y');
+zlabel('Z');
+
+

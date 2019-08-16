@@ -155,15 +155,15 @@ radarmotion = phased.Platform('InitialPosition',[0;0;0],'Velocity',[radar_speed;
 % car_rcs = [20 40];
 % car_pos = [car_dist.*cosd(car_az);car_dist.*sind(car_az);0.5 0.5];
 
-car_dist = [30 40];              % Distance between sensor and cars (meters)
-car_speed = [0 0];  % km/h -> m/s
-car_az = [10 -20];
-car_el = [0 15];
-car_rcs = [20 20];
+car_dist = [30 40 35 35];              % Distance between sensor and cars (meters)
+car_speed = [0 0 0 2];  % km/h -> m/s
+car_az = [10 -20 5 10];
+car_el = [0 15 10 15];
+car_rcs = [20 20 20 20];
 car_pos = [car_dist.*cosd(car_el).*cosd(car_az);car_dist.*cosd(car_el).*sind(car_az);car_dist.*sind(car_el)];
 
 cars = phased.RadarTarget('MeanRCS',car_rcs,'PropagationSpeed',c,'OperatingFrequency',fc);
-carmotion = phased.Platform('InitialPosition',car_pos,'Velocity',[car_speed;0 0;0 0]);
+carmotion = phased.Platform('InitialPosition',car_pos,'Velocity',[car_speed;0 0 0 0;0 0 0 0]);
 
 %%
 % The propagation model is assumed to be free space.

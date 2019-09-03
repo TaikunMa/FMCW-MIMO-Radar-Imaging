@@ -10,7 +10,7 @@ SweepTime = 100e-6;
 SweepBandwidth = 4e9;
 Nt = 2;
 Nr = 6;
-RD_Th = -20;
+RD_Th = -5;
 
 [TargetNum TargetInfomation] = Data_Cube_Imaging(DataCube,...
                                      nfft_r,...

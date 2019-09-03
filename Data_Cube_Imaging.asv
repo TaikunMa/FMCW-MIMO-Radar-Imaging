@@ -53,9 +53,9 @@ AngleData = zeros(TargetNum,Nt*Nr);
 for i=1:TargetNum
     AngleData(i,:) = RangeDoppler(RangeIndex(i),:,DopplerIndex(i));
 end
-% for i=2:Nt
-%     AngleData(:,((i-1)*Nr+1):i*Nr) = AngleData(:,((i-1)*Nr+1):i*Nr).*exp(1i*2*pi*2*fc*DopplerGrid(DopplerIndex)*(i-1)*SweepTime/3e8);
-% end
+for i=2:Nt
+    AngleData(:,((i-1)*Nr+1):i*Nr) = AngleData(:,((i-1)*Nr+1):i*Nr).*exp(1i*2*pi*2*fc*DopplerGrid(DopplerIndex)*(i-1)*SweepTime/3e8);
+end
 
 %% Angle detection
 AngleIndex = zeros(2,TargetNum);
@@ -70,15 +70,7 @@ TargetInformation(3,:) = -RangeGrid(RangeIndex);
 TargetInformation(1:2,:) = -AngleIndex;
 TargetInformation(4,:) = -DopplerGrid(DopplerIndex);
 
-AngleData_FFT = zeros(2,6);
-AngleData_FFT(1,:) = AngleData(1,1:6).';
-AngleData_FFT(2,:) = AngleData(1,7:12).';
-
-AngleDataResult = fft2(AngleData_FFT,61,111);
-figure(1);
-mesh(fftshift(abs(AngleDataResult)));
-figure(2);
-mesh(Pdoav);
+AngleFata
 
 end
 

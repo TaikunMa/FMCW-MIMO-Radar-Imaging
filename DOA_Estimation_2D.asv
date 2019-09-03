@@ -60,8 +60,8 @@ max_row = max_row - 91;
 max_col = max_col - 91;
 
 ang1_cos = lambda/dt*max_col/181;
-ang2_cos = lambda/dt/sqrt(10)*max_row/181;
-temp_z = sqrt(10)*ang2_cos - 3 * ang1_cos;
+ang2_cos = lambda/dt/sqrt(2)*max_row/181;
+temp_z = sqrt(2)*ang2_cos - ang1_cos;
 
 phi_cos = sqrt(1 -(temp_z)^2);
 phi = acos(phi_cos)/pi*180;

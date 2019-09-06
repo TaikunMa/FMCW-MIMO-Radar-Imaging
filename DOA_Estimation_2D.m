@@ -32,7 +32,7 @@ figure(1);viewArray(array1);
 figure(2);viewArray(array2);
 % fc = 150e6;
 % lambda = physconst('LightSpeed')/fc;
-ang1 = [-20; 0];
+ang1 = [-10; 0];
 x = sensorsig(getElementPosition(array1)/lambda,1,[ang1]);
 estimator = phased.BeamscanEstimator2D('SensorArray',array1,'OperatingFrequency',fc, ...
     'DOAOutputPort',true,'NumSignals',1,'AzimuthScanAngles',-90:90,'ElevationScanAngles',-90:90);

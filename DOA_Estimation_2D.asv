@@ -32,7 +32,7 @@ figure(1);viewArray(array1);
 figure(2);viewArray(array2);
 % fc = 150e6;
 % lambda = physconst('LightSpeed')/fc;
-ang1 = [-20; 0];
+ang1 = [-30; 0];
 x = sensorsig(getElementPosition(array1)/lambda,1,[ang1]);
 estimator = phased.BeamscanEstimator2D('SensorArray',array1,'OperatingFrequency',fc, ...
     'DOAOutputPort',true,'NumSignals',1,'AzimuthScanAngles',-90:90,'ElevationScanAngles',-90:90);
@@ -59,9 +59,9 @@ max_val = max(max(abs(Angle_FFT)));
 max_row = max_row - 91;
 max_col = max_col - 91;
 
-ang1_cos = lambda/dt*max_col/181;
-ang2_cos = lambda/dt/sqrt(2)*max_row/181;
-temp_z = sqrt(2)*ang2_cos - ang1_cos;
+angA_sin = lambda/dt*max_col/181;
+ang_cos = lambda/dt/sqrt(10)*max_row/181;
+temp_z = sqrt(10)*ang2_cos - 3 * ang1_cos;
 
 phi_cos = sqrt(1 -(temp_z)^2);
 phi = acos(phi_cos)/pi*180;
